@@ -27,7 +27,7 @@ jobs:
           # FTP_PORT: usually 21 (FTP/explicit FTPS) or 990 (implicit FTPS)
           # FTP_PROTOCOL: ftp | ftps | ftps-legacy
           port: ${{ secrets.FTP_PORT || '21' }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
           # If using FTPS with a shared host, you may need:
           # FTP_SECURITY: strict | loose
           security: ${{ secrets.FTP_SECURITY || 'strict' }}
