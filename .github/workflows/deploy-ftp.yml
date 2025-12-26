@@ -23,6 +23,19 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
 
+          # Optional tuning (set these as GitHub Secrets if needed)
+          # FTP_PORT: usually 21 (FTP/explicit FTPS) or 990 (implicit FTPS)
+          # FTP_PROTOCOL: ftp | ftps | ftps-legacy
+          port: ${{ secrets.FTP_PORT || '21' }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+          # If using FTPS with a shared host, you may need:
+          # FTP_SECURITY: strict | loose
+          security: ${{ secrets.FTP_SECURITY || 'strict' }}
+          # Some hosts are slow or rate-limit FTP operations
+          timeout: ${{ secrets.FTP_TIMEOUT || '120000' }}
+          # Better logs while debugging, switch back to standard later
+          log-level: ${{ secrets.FTP_LOG_LEVEL || 'verbose' }}
+
           # Most cPanel accounts use /public_html/ as the web root.
           # If your FTP root is /home/tjffound, then server-dir should be: public_html/
           # If your FTP root is already /home/tjffound/public_html, then server-dir should be: ./
