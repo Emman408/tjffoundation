@@ -1,0 +1,11 @@
+# Secrets / environment-specific
+forms/config.php
+
+# Dependency installs you might upload manually on cPanel
+forms/vendor/
+forms/PHPMailer/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,41 @@
+name: Deploy to cPanel via FTP
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: deploy-ftp
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy (FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          # Most cPanel accounts use /public_html/ as the web root.
+          # If your FTP root is /home/tjffound, then server-dir should be: public_html/
+          # If your FTP root is already /home/tjffound/public_html, then server-dir should be: ./
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+
+          # Upload everything in the repo
+          local-dir: ./
+
+          exclude: |
+            **/.git*/**
+            **/.github/**
+            **/.vscode/**
+            **/README.md
+            **/READ-ME.txt
+            **/LICENSE.txt
+            **/forms/config.php
