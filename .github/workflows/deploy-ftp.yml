@@ -1,6 +1,7 @@
 name: Deploy to cPanel via FTP
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -9,8 +10,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  deploy_ssh:
+    name: Deploy (SSH/SFTP)
     runs-on: ubuntu-latest
+    # Only run if an SSH key is configured
+    if: ${{ secrets.SSH_PRIVATE_KEY != '' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy (SSH)
+        uses: SamKirkland/web-deploy@v1
+        with:
+          target-server: ${{ secrets.SSH_HOST }}
+          remote-user: ${{ secrets.SSH_USER }}
+          private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-port: ${{ secrets.SSH_PORT || '22' }}
+          destination-path: ${{ secrets.SSH_DESTINATION_PATH }}
+          source-path: ./
+          rsync-options: >-
+            --archive --verbose --compress --human-readable --progress --delete-after
+            --exclude=.git* --exclude=.github/ --exclude=.vscode/ --exclude=READ-ME.txt --exclude=LICENSE.txt
+            --exclude=forms/config.php
+
+  deploy:
+    name: Deploy (FTP/FTPS)
+    runs-on: ubuntu-latest
+    # If SSH deploy is configured, prefer that and skip FTP.
+    if: ${{ secrets.SSH_PRIVATE_KEY == '' }}
 
     steps:
       - name: Checkout
