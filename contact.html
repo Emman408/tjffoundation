@@ -124,7 +124,7 @@
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s" id="contact-form">
                     <div id="form-status" class="mb-3"></div>
-                    <form name="contact" method="POST" action="?success=1#contact-form" data-netlify="true" netlify-honeypot="website" novalidate>
+                    <form name="contact" method="POST" action="/" data-netlify="true" netlify-honeypot="website" novalidate>
                         <div class="row g-3">
                             <input type="hidden" name="form-name" value="contact">
                             <div class="d-none" aria-hidden="true">
@@ -233,13 +233,18 @@
 
     <script>
         (function () {
+            var form = document.querySelector('form[name="contact"]');
             var el = document.getElementById('form-status');
-            if (!el) return;
+            if (!form || !el) return;
+
+            function showAlert(kind, message) {
+                el.innerHTML = '<div class="alert alert-' + kind + ' mb-0" role="alert">' + message + '</div>';
+            }
+
+            // If we ever land here with ?success=1 (e.g., manual redirect), show message then clean URL.
             var params = new URLSearchParams(window.location.search);
             if (params.get('success') === '1') {
-                el.innerHTML = '<div class="alert alert-success mb-0" role="alert">Thanks—your message has been sent.</div>';
-
-                // After a short delay, redirect to the same page without the success flag.
+                showAlert('success', 'Thanks—your message has been sent.');
                 window.setTimeout(function () {
                     try {
                         var url = new URL(window.location.href);
@@ -251,6 +256,39 @@
                     }
                 }, 3500);
             }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Trigger native validation UI.
+                if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
+
+                showAlert('primary', 'Sending your message…');
+
+                var data = new FormData(form);
+
+                fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(data).toString()
+                })
+                    .then(function () {
+                        showAlert('success', 'Thanks—your message has been sent.');
+                        form.reset();
+
+                        // After showing success, redirect back to this page/anchor (clean URL).
+                        window.setTimeout(function () {
+                            try {
+                                window.location.replace(window.location.pathname + '#contact-form');
+                            } catch (e) {
+                                // Fallback: do nothing.
+                            }
+                        }, 3500);
+                    })
+                    .catch(function () {
+                        showAlert('danger', 'Sorry—your message could not be sent. Please try again.');
+                    });
+            });
         })();
     </script>
 </body>
