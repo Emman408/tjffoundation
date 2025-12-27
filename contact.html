@@ -238,6 +238,18 @@
             var params = new URLSearchParams(window.location.search);
             if (params.get('success') === '1') {
                 el.innerHTML = '<div class="alert alert-success mb-0" role="alert">Thanks—your message has been sent.</div>';
+
+                // After a short delay, redirect to the same page without the success flag.
+                window.setTimeout(function () {
+                    try {
+                        var url = new URL(window.location.href);
+                        url.searchParams.delete('success');
+                        if (!url.hash) url.hash = '#contact-form';
+                        window.location.replace(url.pathname + url.search + url.hash);
+                    } catch (e) {
+                        // Fallback: do nothing.
+                    }
+                }, 3500);
             }
         })();
     </script>
