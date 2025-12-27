@@ -3,6 +3,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/tjffound/public_html/
     - /bin/mkdir -p $DEPLOYPATH
+    - /bin/rm -f $DEPLOYPATH/404.html
     - |
       if command -v rsync >/dev/null 2>&1; then
         rsync -av \
