@@ -1,0 +1,18 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/tjffound/public_html/
+    - /bin/mkdir -p $DEPLOYPATH
+    - |
+      if command -v rsync >/dev/null 2>&1; then
+        rsync -av \
+          --exclude='.git/' \
+          --exclude='.github/' \
+          --exclude='.vscode/' \
+          --exclude='forms/config.php' \
+          --exclude='forms/vendor/' \
+          --exclude='forms/PHPMailer/' \
+          ./ $DEPLOYPATH
+      else
+        /bin/cp -R * $DEPLOYPATH
+      fi
