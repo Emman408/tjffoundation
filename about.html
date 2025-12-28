@@ -343,12 +343,18 @@
                     </div>
                     <p class="fs-5 mb-5 wow fadeInUp" data-wow-delay="0.2s">Subscribe for updates on outreach, rural
                         missions, and opportunities to serve with TJF-Foundation.</p>
-                    <div class="position-relative wow fadeInUp" data-wow-delay="0.3s">
-                        <input class="form-control border-0 bg-dark rounded-pill w-100 py-4 ps-4 pe-5" type="text"
-                            placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-3 px-4 position-absolute top-0 end-0 me-2"
+                    <form class="newsletter-form position-relative wow fadeInUp" data-wow-delay="0.3s" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+                        <input type="hidden" name="form-name" value="newsletter">
+                        <input type="hidden" name="firstName" value="">
+                        <input type="hidden" name="lastName" value="">
+                        <p class="d-none">
+                            <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
+                        </p>
+                        <input class="form-control border-0 bg-dark rounded-pill w-100 py-4 ps-4 pe-5" type="email"
+                            name="email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-primary py-3 px-4 position-absolute top-0 end-0 me-2"
                             style="margin-top: 7px;">Subscribe</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
