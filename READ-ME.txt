@@ -1,9 +1,9 @@
   =>  Template Name    : Poseify - Modeling Agency Website Template
 
-  =>  Template Link    : https://htmlcodex.com/modeling-agency-website-template
+  =>  Template Link    : (removed)
 
-  =>  Template License : https://htmlcodex.com/license (or read the LICENSE.txt file)
+  =>  Template License : (see LICENSE.txt)
 
-  =>  Template Author  : HTML Codex
+  =>  Template Author  : (removed)
 
-  =>  Author Website   : https://htmlcodex.com
+  =>  Author Website   : (removed)
