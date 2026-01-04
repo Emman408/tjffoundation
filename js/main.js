@@ -193,6 +193,41 @@
 
     initNewsletterSubscribe();
 
+
+    // Outreach modal: hover zoom around cursor
+    var initOutreachImageZoom = function () {
+        var zoomContainers = document.querySelectorAll('.outreach-zoom');
+        if (!zoomContainers || zoomContainers.length === 0) return;
+
+        zoomContainers.forEach(function (container) {
+            var img = container.querySelector('img');
+            if (!img) return;
+
+            container.addEventListener('mouseenter', function () {
+                container.classList.add('zooming');
+            });
+
+            container.addEventListener('mousemove', function (e) {
+                var rect = container.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+
+                var x = ((e.clientX - rect.left) / rect.width) * 100;
+                var y = ((e.clientY - rect.top) / rect.height) * 100;
+
+                container.style.setProperty('--zoom-x', x + '%');
+                container.style.setProperty('--zoom-y', y + '%');
+            }, { passive: true });
+
+            container.addEventListener('mouseleave', function () {
+                container.classList.remove('zooming');
+                container.style.removeProperty('--zoom-x');
+                container.style.removeProperty('--zoom-y');
+            });
+        });
+    };
+
+    initOutreachImageZoom();
+
     
 })(jQuery);
 
