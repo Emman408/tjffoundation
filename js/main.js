@@ -228,6 +228,35 @@
 
     initOutreachImageZoom();
 
+    // Outreach video: centered play overlay
+    var initOutreachVideoPlay = function () {
+        var wrappers = document.querySelectorAll('.video-thumb');
+        if (!wrappers || wrappers.length === 0) return;
+
+        wrappers.forEach(function (wrapper) {
+            var video = wrapper.querySelector('video');
+            var playButton = wrapper.querySelector('.video-play');
+            if (!video || !playButton) return;
+
+            var showButton = function () {
+                playButton.style.display = 'flex';
+            };
+
+            var hideButton = function () {
+                playButton.style.display = 'none';
+            };
+
+            playButton.addEventListener('click', function () {
+                video.play();
+            });
+
+            video.addEventListener('play', hideButton);
+            video.addEventListener('pause', showButton);
+            video.addEventListener('ended', showButton);
+        });
+    };
+
+    initOutreachVideoPlay();
+
     
 })(jQuery);
-
